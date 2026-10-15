@@ -821,7 +821,7 @@ func (f *plFormatter) sqlStmt(indent int) error {
 	if f.hasComment(f.i, semi) {
 		return f.lightStmt(indent)
 	}
-	into, intoEnd := -1, -1
+	into := -1
 	for i := f.scanUntil(f.i, func(i int) bool { return i >= semi || f.word(i) == "into" }); i >= 0 && i < semi; {
 		if prev := f.word(i - 1); prev != "insert" && prev != "merge" {
 			into = i
@@ -841,7 +841,7 @@ func (f *plFormatter) sqlStmt(indent int) error {
 		var targets []string
 		for {
 			k := j
-			for k < semi && (f.isName(k) || f.toks[k].Kind == pg.Token_ASCII_46) && !(k > j && f.isName(k) && f.isName(k-1)) {
+			for k < semi && (f.isName(k) || f.toks[k].Kind == pg.Token_ASCII_46) && (k <= j || !f.isName(k) || !f.isName(k-1)) {
 				k++
 			}
 			if k == j {
@@ -858,9 +858,8 @@ func (f *plFormatter) sqlStmt(indent int) error {
 			}
 			j++
 		}
-		intoEnd = j
 		intoLine = riverKW(indent, "INTO") + " " + strict + strings.Join(targets, ", ")
-		text = f.text(f.i, into) + " " + f.text(intoEnd, semi)
+		text = f.text(f.i, into) + " " + f.text(j, semi)
 	}
 	lines, err := f.p.sqlText(text, indent)
 	if err != nil {

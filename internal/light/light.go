@@ -61,7 +61,7 @@ func tokenText(src string, t printer.Token) string {
 
 func isBareWord(s string) bool {
 	for _, r := range s {
-		if !(r >= 'a' && r <= 'z' || r >= 'A' && r <= 'Z' || r == '_') {
+		if (r < 'a' || r > 'z') && (r < 'A' || r > 'Z') && r != '_' {
 			return false
 		}
 	}

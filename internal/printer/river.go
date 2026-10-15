@@ -183,7 +183,7 @@ func (p *printer) selectBody(s *pg.SelectStmt, base int) ([]string, error) {
 	if len(s.DistinctClause) > 0 {
 		kw = "SELECT DISTINCT"
 		// DISTINCT alone is stored as a list holding one nil node.
-		if !(len(s.DistinctClause) == 1 && s.DistinctClause[0].Node == nil) {
+		if len(s.DistinctClause) != 1 || s.DistinctClause[0].Node != nil {
 			on, err := p.exprList(s.DistinctClause)
 			if err != nil {
 				return nil, err

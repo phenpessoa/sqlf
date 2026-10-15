@@ -44,12 +44,12 @@ func run(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 	failed := false
 	if len(args) == 0 {
 		if *write {
-			fmt.Fprintln(stderr, "sqlf: cannot use -w with standard input")
+			_, _ = fmt.Fprintln(stderr, "sqlf: cannot use -w with standard input")
 			return 1
 		}
 		src, err := io.ReadAll(stdin)
 		if err != nil {
-			fmt.Fprintf(stderr, "sqlf: %v\n", err)
+			_, _ = fmt.Fprintf(stderr, "sqlf: %v\n", err)
 			return 1
 		}
 		if !process("<stdin>", src, stdout, stderr) {
@@ -61,7 +61,7 @@ func run(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 	for _, arg := range args {
 		info, err := os.Stat(arg)
 		if err != nil {
-			fmt.Fprintf(stderr, "sqlf: %v\n", err)
+			_, _ = fmt.Fprintf(stderr, "sqlf: %v\n", err)
 			failed = true
 			continue
 		}
@@ -87,7 +87,7 @@ func run(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 			return nil
 		})
 		if err != nil {
-			fmt.Fprintf(stderr, "sqlf: %v\n", err)
+			_, _ = fmt.Fprintf(stderr, "sqlf: %v\n", err)
 			failed = true
 		}
 	}
@@ -104,7 +104,7 @@ func exitCode(failed bool) int {
 func processFile(path string, stdout, stderr io.Writer) bool {
 	src, err := os.ReadFile(path)
 	if err != nil {
-		fmt.Fprintf(stderr, "sqlf: %v\n", err)
+		_, _ = fmt.Fprintf(stderr, "sqlf: %v\n", err)
 		return false
 	}
 	return process(path, src, stdout, stderr)
@@ -117,9 +117,9 @@ func process(name string, src []byte, stdout, stderr io.Writer) bool {
 	if err != nil {
 		var fe *format.Error
 		if errors.As(err, &fe) && fe.Line > 0 {
-			fmt.Fprintf(stderr, "%s:%d:%d: %s\n", name, fe.Line, fe.Col, fe.Msg)
+			_, _ = fmt.Fprintf(stderr, "%s:%d:%d: %s\n", name, fe.Line, fe.Col, fe.Msg)
 		} else {
-			fmt.Fprintf(stderr, "%s: %v\n", name, err)
+			_, _ = fmt.Fprintf(stderr, "%s: %v\n", name, err)
 		}
 		return false
 	}
@@ -128,7 +128,7 @@ func process(name string, src []byte, stdout, stderr io.Writer) bool {
 	ok := true
 
 	if changed && (*list || *check) {
-		fmt.Fprintln(stdout, name)
+		_, _ = fmt.Fprintln(stdout, name)
 	}
 	if changed && *check {
 		ok = false
@@ -136,19 +136,19 @@ func process(name string, src []byte, stdout, stderr io.Writer) bool {
 	if changed && *write {
 		info, err := os.Stat(name)
 		if err != nil {
-			fmt.Fprintf(stderr, "sqlf: %v\n", err)
+			_, _ = fmt.Fprintf(stderr, "sqlf: %v\n", err)
 			return false
 		}
 		if err := os.WriteFile(name, res, info.Mode().Perm()); err != nil {
-			fmt.Fprintf(stderr, "sqlf: %v\n", err)
+			_, _ = fmt.Fprintf(stderr, "sqlf: %v\n", err)
 			return false
 		}
 	}
 	if changed && *diffs {
-		fmt.Fprint(stdout, diff.Unified(name+".orig", name, string(src), out))
+		_, _ = fmt.Fprint(stdout, diff.Unified(name+".orig", name, string(src), out))
 	}
 	if !*list && !*write && !*diffs && !*check {
-		stdout.Write(res)
+		_, _ = stdout.Write(res)
 	}
 	return ok
 }
