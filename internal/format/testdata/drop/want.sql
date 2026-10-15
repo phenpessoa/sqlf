@@ -1,0 +1,13 @@
+DROP TABLE IF EXISTS "a", "s"."b" CASCADE;
+
+DROP INDEX CONCURRENTLY IF EXISTS "i";
+
+DROP TYPE IF EXISTS "order_status";
+
+DROP SCHEMA "billing";
+
+DROP EXTENSION IF EXISTS "uuid-ossp", pgcrypto;
+
+DROP FUNCTION "f"(INTEGER, TEXT), "g";
+
+DROP TRIGGER IF EXISTS "tr" ON "s"."t";

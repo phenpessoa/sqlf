@@ -1,0 +1,1 @@
+with recent as (select id, email from site_orcamentos where created_at > now() - interval '7 days'), counts as (select email, count(*) as total from recent group by email) select c.email, c.total from counts c;

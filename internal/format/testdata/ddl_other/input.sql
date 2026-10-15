@@ -1,0 +1,14 @@
+create type order_status as enum ('new', 'pending', 'shipped');
+alter type order_status add value if not exists 'returned' after 'shipped';
+create or replace view recent_orcamentos as select id, email from site_orcamentos;
+create sequence if not exists invoice_seq start with 1000 increment by 1 no maxvalue cycle owned by site_orcamentos.id;
+create schema if not exists billing;
+create extension if not exists pgcrypto with schema public;
+comment on column site_orcamentos.gclid is 'Google click id';
+comment on table site_orcamentos is null;
+grant select, insert on site_orcamentos to app_user;
+grant usage on schema billing to public;
+revoke all on all tables in schema billing from app_user cascade;
+grant execute on function f(int) to app_user with grant option;
+alter table site_orcamentos rename column gclid to google_click_id;
+alter table if exists a rename to b;

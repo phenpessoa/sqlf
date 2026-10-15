@@ -1,0 +1,1 @@
+select o.id as order_id, count(*) as total, w.page from site_orcamentos o left join whatsapp_tracking w on w.page = o.email and w.source = 'ads' where o.id > 10 group by o.id, w.page order by o.id desc;
