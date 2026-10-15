@@ -5,9 +5,9 @@ package light
 import (
 	"strings"
 
-	pg "github.com/pganalyze/pg_query_go/v6"
-
 	"github.com/phenpessoa/sqlf/internal/printer"
+
+	pg "github.com/pganalyze/pg_query_go/v6"
 )
 
 // Format returns the statement made of toks, ending with ";".

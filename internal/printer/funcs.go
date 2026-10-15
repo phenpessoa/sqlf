@@ -318,13 +318,27 @@ func (p *printer) frame(w *pg.WindowDef) (string, error) {
 		}
 		return "", unsupported("frame bound")
 	}
-	start, err := bound(frameStartUnboundedPre, frameStartUnboundedFol, frameStartCurrentRow, frameStartOffsetPre, frameStartOffsetFol, w.StartOffset)
+	start, err := bound(
+		frameStartUnboundedPre,
+		frameStartUnboundedFol,
+		frameStartCurrentRow,
+		frameStartOffsetPre,
+		frameStartOffsetFol,
+		w.StartOffset,
+	)
 	if err != nil {
 		return "", err
 	}
 	s := mode + " " + start
 	if o&frameBetween != 0 {
-		end, err := bound(frameEndUnboundedPre, frameEndUnboundedFol, frameEndCurrentRow, frameEndOffsetPre, frameEndOffsetFol, w.EndOffset)
+		end, err := bound(
+			frameEndUnboundedPre,
+			frameEndUnboundedFol,
+			frameEndCurrentRow,
+			frameEndOffsetPre,
+			frameEndOffsetFol,
+			w.EndOffset,
+		)
 		if err != nil {
 			return "", err
 		}

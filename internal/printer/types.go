@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	pg "github.com/pganalyze/pg_query_go/v6"
-
 	"github.com/phenpessoa/sqlf/internal/builtins"
+
+	pg "github.com/pganalyze/pg_query_go/v6"
 )
 
 // canonicalTypes maps internal pg_catalog type names to the spelling the

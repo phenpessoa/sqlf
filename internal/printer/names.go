@@ -4,10 +4,10 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/phenpessoa/sqlf/internal/builtins"
+
 	pg "github.com/pganalyze/pg_query_go/v6"
 	pgquery "github.com/wasilibs/go-pgquery"
-
-	"github.com/phenpessoa/sqlf/internal/builtins"
 )
 
 // quoteIdent always double-quotes an identifier. The parser has already

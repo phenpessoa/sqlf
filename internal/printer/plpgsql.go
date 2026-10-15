@@ -389,7 +389,8 @@ func (f *plFormatter) decl(from, to int) (gridRow, bool) {
 		k++
 	}
 	sep := f.scanUntil(k, func(i int) bool {
-		return i >= to || f.toks[i].Kind == pg.Token_COLON_EQUALS || f.toks[i].Kind == pg.Token_ASCII_61 || f.word(i) == "default"
+		return i >= to || f.toks[i].Kind == pg.Token_COLON_EQUALS || f.toks[i].Kind == pg.Token_ASCII_61 ||
+			f.word(i) == "default"
 	})
 	if sep < 0 || sep > to {
 		sep = to
@@ -879,7 +880,8 @@ func (f *plFormatter) sqlStmt(indent int) error {
 				return f.lightStmt(indent)
 			}
 			for k := main + 1; k < len(lines); k++ {
-				if l := lines[k]; len(l) > indent && strings.TrimSpace(l[indent:min(len(l), indent+riverWidth+1)]) != "" {
+				if l := lines[k]; len(l) > indent &&
+					strings.TrimSpace(l[indent:min(len(l), indent+riverWidth+1)]) != "" {
 					at = k
 					break
 				}

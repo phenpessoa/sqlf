@@ -7,13 +7,13 @@ import (
 	"sort"
 	"strings"
 
-	pg "github.com/pganalyze/pg_query_go/v6"
-	pgquery "github.com/wasilibs/go-pgquery"
-	"github.com/wasilibs/go-pgquery/parser"
-
 	"github.com/phenpessoa/sqlf/internal/light"
 	"github.com/phenpessoa/sqlf/internal/printer"
 	"github.com/phenpessoa/sqlf/internal/safety"
+
+	pg "github.com/pganalyze/pg_query_go/v6"
+	pgquery "github.com/wasilibs/go-pgquery"
+	"github.com/wasilibs/go-pgquery/parser"
 )
 
 // Error is a formatting failure. Line and Col are 1-based; they are 0 when
@@ -138,7 +138,10 @@ func buildItems(src string, raws []*pg.RawStmt, toks []printer.Token) ([]item, e
 			}
 			return nil, &Error{Msg: "internal error: token outside any statement"}
 		}
-		items = append(items, item{kind: itemComment, start: t.Start, end: t.End, text: commentText(src[t.Start:t.End])})
+		items = append(
+			items,
+			item{kind: itemComment, start: t.Start, end: t.End, text: commentText(src[t.Start:t.End])},
+		)
 	}
 	sort.SliceStable(items, func(a, b int) bool { return items[a].start < items[b].start })
 	return items, nil
